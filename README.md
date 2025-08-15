@@ -3,9 +3,21 @@ Kalogridis and Van Aelst (2023, SJS).
 
 Here are detailed instructions:
 1. First, download all the files in your R working directory.
-2. Open and load the R-functions quad_smsp.R (Quantile Smoothing Spline Estimator), quad_pensp.R (Quantile Penalized Spline Estimator) and ls_pensp2.R (Least-Squares Penalized Spline Estimator).
-3. Be sure to have installed and loaded the R-packages fda, Rcpp and RcppArmadillo.
-4. These R functions will source the combined.cpp file containing the C++ implementations; no C++ knowledge is required.
+2. Load the R-functions quad_smsp.R (Quantile Smoothing Spline Estimator), quad_pensp.R (Quantile Penalized Spline Estimator) and ls_pensp2.R (Least-Squares Penalized Spline Estimator).
+
+```r
+source("quad_smsp.R")    # Quantile Smoothing Spline Estimator
+source("quad_pensp.R")   # Quantile Penalized Spline Estimator
+source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
+```
+
+4. Be sure to have installed and loaded the R-packages fda, Rcpp and RcppArmadillo:
+
+```r
+install.packages(c("fda", "Rcpp", "RcppArmadillo"))
+```
+
+6. These R functions will source the combined.cpp file containing the C++ implementations; no C++ knowledge is required.
 
 Here is an example of their use in R with simulated discretely sampled functional data:
 
