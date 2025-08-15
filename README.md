@@ -2,8 +2,8 @@ This repository contains fast C++ implementations with an R interface of the pen
 Kalogridis and Van Aelst (2023, SJS). 
 
 Here are detailed instructions:
-1. First, download all the files in your R working directory.
-2. Load the R-functions quad_smsp.R (Quantile Smoothing Spline Estimator), quad_pensp.R (Quantile Penalized Spline Estimator) and ls_pensp2.R (Least-Squares Penalized Spline Estimator).
+1. First, download all the files in your ```R``` working directory.
+2. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp2.R``` (Least-Squares Penalized Spline Estimator).
 
 ```r
 source("quad_smsp.R")    # Quantile Smoothing Spline Estimator
@@ -11,15 +11,16 @@ source("quad_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
 ```
 
-4. Be sure to have installed and loaded the R-packages fda, Rcpp and RcppArmadillo:
+4. Be sure to have installed and loaded the R-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
 
 ```r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
 ```
 
-6. These R functions will source the combined.cpp file containing the C++ implementations; no C++ knowledge is required.
+5. These R functions will source the ```combined.cpp``` file containing the ```C++``` implementations; no ```C++``` knowledge is required.
 
-Here is an example of their use in R with simulated discretely sampled functional data:
+All examples below use simulated discretely sampled functional data. No external datasets are required.
+
 
 ```r
 set.seed(2)
@@ -87,4 +88,4 @@ But for heavier tailed measurement errors the situation changes drastically:
 ```
 <img width="1200" height="800" alt="Image" src="https://github.com/user-attachments/assets/812a573f-45a4-4b32-a1df-017f7b5f2f5b" />
 
-Please see the R-functions for complete documentation of the settings/options and get in contact with me at ioannis.kalogridis@glasgow.ac.uk for any issues/questions.
+Please see the ```R```-functions for complete documentation of the settings/options and get in contact with me at ioannis.kalogridis@glasgow.ac.uk for any issues/questions.
