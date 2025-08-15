@@ -10,7 +10,7 @@ Here are detailed instructions:
 Here is an example of their use in R with simulated discretely sampled functional data:
 
 ```r
-set.seed(1)
+set.seed(2)
 n    <- 100
 p    <- 50
 
@@ -48,7 +48,7 @@ If the measurement errors follow a light-tailed distribution, the estimators per
 But for heavier tailed measurement errors the situation changes drastically:
 
 ```r
- set.seed(1)
+ set.seed(2)
  X <- matrix(NA, nrow = n, ncol = p)
   for(i in 1:n){
     X[i,] <- mu_grid 
