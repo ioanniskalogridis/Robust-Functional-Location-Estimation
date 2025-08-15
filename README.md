@@ -2,7 +2,7 @@ This repository contains fast ```C++``` implementations with an ```R``` interfac
 Kalogridis and Van Aelst (2023, SJS). 
 
 Here are detailed instructions:
-1. First, download all the files in your ```R``` working directory.
+1. First, download all the files in your ```R``` working directory. This is at:
 ```r
 getwd()
 ```
