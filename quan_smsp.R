@@ -55,19 +55,6 @@ quan_smsp <- function(Y, alpha = 0.5, r = 2,
   # Roughness penalty on r-th derivative
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
-  # --- Initial Fit ---
-  # Heuristic bandwidth based on average number of measurements
-  h_m <- 1 / mean(1 / m_i)
-  
-  # Initial lambda (smoothing parameter) based on nonparametric theory
-  lambda_init <- 100 * (h_m * n)^(-2 * r / (2 * r + 1))
-  
-  # Initial coefficient estimate using weighted penalized least squares
-  beta_init <- solve(t(B) %*% diag(weights_per_obs) %*% B + lambda_init * Pen,
-                     t(B) %*% (weights_per_obs * y_obs))
-  
-  resid_init <- y_obs - B %*% beta_init  # initial residuals
-  
   # --- IRLS + GCV ---
   # Main C++ routine: iteratively reweighted least squares with GCV
   fit <- irls_gcv_cpp_pensp(B, Pen, y_obs, weights_per_obs, alpha,
