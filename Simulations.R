@@ -1,4 +1,5 @@
-## --- Simulation with heavy-tailed KL process --- ##
+## --- Simulations as in Section 4 of Kalogridis(2025+) --- ##
+
 nsim <- 500
 n    <- 100
 p    <- 50
