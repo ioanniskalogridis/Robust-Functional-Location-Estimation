@@ -45,7 +45,8 @@ mu_grid <- mu_true(t_grid)
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
 If the measurement errors follow a light-tailed distribution, the estimators perform comparably. 
-![Description of figure](df1)
+
+<img width="1750" height="1375" alt="Image" src="https://github.com/user-attachments/assets/c3955e99-7546-4033-80bb-352914ecdc7b" />
 
 But for heavier tailed measurement errors the situation changes drastically:
 
