@@ -6,8 +6,8 @@ Here are detailed instructions:
 2. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp2.R``` (Least-Squares Penalized Spline Estimator).
 
 ```r
-source("quad_smsp.R")    # Quantile Smoothing Spline Estimator
-source("quad_pensp.R")   # Quantile Penalized Spline Estimator
+source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
+source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
 ```
 
