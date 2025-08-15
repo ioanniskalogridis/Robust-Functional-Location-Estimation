@@ -34,11 +34,6 @@ mu_grid <- mu_true(t_grid)
     zeta <- 0.5*rt(m_i, df = 10)
     Y[i, idx] <- X[i, idx] + zeta
   }
-  # par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
-  # matplot(t_grid,t(Y), lwd = 3, lty = 1, col = "gray", type = "p", pch = 20,
-          # cex.lab = 2.5, cex.axis = 2.5, ylab = "", xlab = "t", cex = 1.6)
-  # lines(t_grid, mu_grid, lwd = 3, col = "black")
-  # grid()
 
   fit.lspensp <- ls_pensp(Y, K = 30)
   fit.pensp <- quan_pensp(Y, alpha = 0.5, K = 30) # penalized-spline quantile estimator
