@@ -22,7 +22,6 @@ for(k in 1:nsim){
     X[i,] <- mu_grid 
     for(j in 1:50){ 
       X[i,] <- X[i, ] +  sqrt(2)*rt(1, df = 5)*sapply(t_grid, FUN = function(x) sin((j-1/2)*pi*x)/((j-1/2)*pi) )
-      # X[i,] <- X[i, ] +  sqrt(2)*rnorm(1)*sapply(t_grid, FUN = function(x) sin((j-1/2)*pi*x)/((j-1/2)*pi) )
     }
     m_i <- sample(floor(0.5 * p):floor(0.8 * p), 1)
     idx <- sort(sample(seq_len(p), m_i))
@@ -39,17 +38,16 @@ for(k in 1:nsim){
   fit.lspensp <- ls_pensp(Y, K = 30)
   fit.pensp <- quan_pensp(Y, alpha = 0.5, K = 30) # penalized-spline quantile estimator
   
-  plot()
-  plot(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
+  par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
+  plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, ylab = "", xlab = "t",
+       ylim = c(-1.2, 1.2)) ; grid()
+  lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
   
-  ## --- Compute MSEs against population mean mu_grid ---
-  # If you want to compare to the population mean mu_grid:
   mse.smsp[k]  <- mean((fit.smsp$mu - mu_grid)^2)
   mse.pensp[k] <- mean((fit.pensp$mu - mu_grid)^2)
   mse.lspensp[k] <- mean((fit.lspensp$mu - mu_grid)^2)
   
-  ## --- Save fitted shapes for later plotting ---
   shapes.smsp[, k]  <- fit.smsp$mu
   shapes.pensp[, k] <- fit.pensp$mu
   shapes.lspensp[, k] <- fit.lspensp$mu
