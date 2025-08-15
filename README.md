@@ -70,4 +70,4 @@ But for heavier tailed measurement errors the situation changes drastically:
   lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
-  
+![Description of figure](df10.png)
