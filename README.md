@@ -57,7 +57,7 @@ But for heavier tailed measurement errors the situation changes drastically:
     }
     m_i <- sample(floor(0.5 * p):floor(0.8 * p), 1)
     idx <- sort(sample(seq_len(p), m_i))
-    zeta <- 0.5*rt(m_i, df = 10)
+    zeta <- 0.5*rt(m_i, df = 1)
     Y[i, idx] <- X[i, idx] + zeta
   }
 
