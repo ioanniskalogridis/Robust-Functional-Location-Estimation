@@ -44,8 +44,10 @@ mu_grid <- mu_true(t_grid)
   lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
-If the measurement errors follow a light-tailed distribution but for heavier tailed measurement errors the situation changes drastically:
+If the measurement errors follow a light-tailed distribution, the estimators perform comparably. 
+But for heavier tailed measurement errors the situation changes drastically:
 
+```r
  set.seed(1)
  X <- matrix(NA, nrow = n, ncol = p)
   for(i in 1:n){
@@ -72,5 +74,5 @@ If the measurement errors follow a light-tailed distribution but for heavier tai
        ylim = c(-1.2, 1.2)) ; grid()
   lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
-
+```
   
