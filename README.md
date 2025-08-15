@@ -65,7 +65,7 @@ If the measurement errors follow a light-tailed distribution, the estimators per
 
 <img width="1200" height="800" alt="Image" src="https://github.com/user-attachments/assets/c3955e99-7546-4033-80bb-352914ecdc7b" />
 
-But for heavier tailed measurement errors the situation changes drastically:
+But for heavier tailed measurement errors the situation changes dramatically:
 
 ```r
  set.seed(2)
