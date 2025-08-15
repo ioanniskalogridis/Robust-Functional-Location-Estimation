@@ -1,33 +1,73 @@
-require(fda) 
-require(Rcpp) 
-require(RcppArmadillo)
-Rcpp::sourceCpp("combined.cpp")
-ls_pensp <- function(Y, r = 2, m = 4, K = 30, lambda_grid = exp(seq(log(1e-8), log(1e-1), 
-                                                                    length.out = 50))) { 
+# ----------------------------------------------------------------------
+# ls_pensp: Least-Squares Penalized Spline Estimator
+# ----------------------------------------------------------------------
+# This function estimates the mean function of discretely sampled
+# functional data using B-splines and a roughness penalty.
+# Computation is performed via a fast C++ routine.
+# ----------------------------------------------------------------------
+
+require(fda)           # For B-spline basis and penalty functions
+require(Rcpp)          # Interface to C++
+require(RcppArmadillo) # Efficient matrix operations in C++
+Rcpp::sourceCpp("combined.cpp")  # Load the C++ functions
+
+ls_pensp <- function(Y, r = 2, m = 4, K = 30,
+                     lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50))) { 
   
-  Y <- as.matrix(Y) 
-  Y <- Y[rowSums(!is.na(Y)) > 0, , drop = FALSE] 
-  n <- nrow(Y) 
-  p <- ncol(Y)
+  # --- Preprocessing ---
+  # Convert input to matrix if needed and remove empty rows
+  Y <- as.matrix(Y)
+  Y <- Y[rowSums(!is.na(Y)) > 0, , drop = FALSE]
   
-  t_grid <- seq(0, 1, length.out = p) 
-  T_mat <- matrix(rep(t_grid, each = n), nrow = n) 
-  obs_idx <- which(!is.na(Y)) 
-  t_obs <- T_mat[obs_idx] 
-  y_obs <- as.numeric(Y[obs_idx])
+  n <- nrow(Y)  # number of subjects
+  p <- ncol(Y)  # number of measurement points per subject
   
-  m_i <- rowSums(!is.na(Y)) 
-  row_id <- ((obs_idx - 1) %% n) + 1 
+  # Create a uniform grid for the measurements (0 to 1)
+  t_grid <- seq(0, 1, length.out = p)
+  
+  # Map each observation to its time point
+  T_mat <- matrix(rep(t_grid, each = n), nrow = n)
+  obs_idx <- which(!is.na(Y))      # indices of observed entries
+  t_obs <- T_mat[obs_idx]          # time points of observed entries
+  y_obs <- as.numeric(Y[obs_idx])  # observed values
+  
+  # --- Weights ---
+  # Compute number of measurements per subject
+  m_i <- rowSums(!is.na(Y))
+  
+  # Map linear indices back to row IDs
+  row_id <- ((obs_idx - 1) %% n) + 1
+  
+  # Assign weight 1/(n * m_i) to each observation
   weights_per_obs <- 1 / (n * m_i[row_id])
   
-  b_basis <- create.bspline.basis(c(0, 1), nbasis = K, norder = m) 
-  B <- eval.basis(t_obs, b_basis) 
+  # --- Basis Construction ---
+  # Use B-spline basis with K basis functions and order m
+  b_basis <- create.bspline.basis(rangeval = c(0, 1), nbasis = K, norder = m)
+  
+  # Evaluate B-spline basis at observed times
+  B <- eval.basis(t_obs, b_basis)
+  
+  # --- Penalty Matrix ---
+  # Roughness penalty on r-th derivative
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
+  # --- Fit ---
+  # Solve penalized least squares using fast C++ routine
   res <- ls_pensp_cpp2(B, Pen, y_obs, weights_per_obs, lambda_grid)
   
+  # Compute estimated mean function on full grid
   mu_est <- as.numeric(eval.basis(t_grid, b_basis) %*% res$beta)
   
-  list(mu = mu_est, beta = res$beta, lambda = res$lambda, 
-       gcv = res$gcv, t_grid = t_grid, basis = b_basis, Penalty = Pen, 
-       weights_per_obs = weights_per_obs) }
+  # --- Return Results ---
+  return(list(
+    mu = mu_est,                  # estimated mean function
+    beta = res$beta,              # estimated B-spline coefficients
+    lambda = res$lambda,          # selected smoothing parameter
+    gcv = res$gcv,                # GCV values over lambda grid
+    t_grid = t_grid,              # grid of evaluation points
+    basis = b_basis,              # B-spline basis object
+    Penalty = Pen,                # penalty matrix
+    weights_per_obs = weights_per_obs  # observation weights
+  ))
+}
