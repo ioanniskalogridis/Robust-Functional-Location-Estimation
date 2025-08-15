@@ -2,14 +2,14 @@
 # Simulation Study: Section 4 of Kalogridis (2025+)
 # ----------------------------------------------------------------------
 # This script simulates discretely sampled functional data, adds
-# heavy-tailed noise, and compares three estimators:
+# noise, and compares three estimators:
 #   1. Smoothing-spline quantile estimator (quan_smsp)
 #   2. Least-squares penalized spline estimator (ls_pensp)
 #   3. Quantile penalized spline estimator (quan_pensp)
 # ----------------------------------------------------------------------
 
 # Number of simulations (500 in the paper)
-nsim <- 5
+nsim <- 20
 
 # Number of subjects and number of measurement points
 n <- 100
