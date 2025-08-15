@@ -14,7 +14,7 @@ source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
 ```
 
-4. Be sure to have installed and loaded the R-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
+4. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
 
 ```r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
