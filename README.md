@@ -15,7 +15,11 @@ source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
 
 ```r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
+
+library(fda);library(Rcpp);library(RcppArmadillo)
 ```
+
+
 
 5. These R functions will source the ```combined.cpp``` file containing the ```C++``` implementations; no ```C++``` knowledge is required.
 
