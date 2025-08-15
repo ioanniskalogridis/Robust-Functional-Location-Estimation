@@ -3,7 +3,10 @@ Kalogridis and Van Aelst (2023, SJS).
 
 Here are detailed instructions:
 1. First, download all the files in your ```R``` working directory.
-2. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp2.R``` (Least-Squares Penalized Spline Estimator).
+```r
+getwd()
+```
+3. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp2.R``` (Least-Squares Penalized Spline Estimator).
 
 ```r
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
