@@ -98,3 +98,7 @@ But for heavier tailed measurement errors the situation changes dramatically:
 Please see the ```R```-functions for complete documentation of the settings/options. 
 
 Get in contact with me at ioannis.kalogridis@glasgow.ac.uk for any issues/questions or suggestions.
+
+## References
+1. Kalogridis, I. (2025+) Penalized Spline M-Estimators for Discretely Sampled Functional Data: Existence and Asymptotics.
+2. Kalogridis, I. and Van Aelst, S. (2023) Robust Optimal Estimation of Location from Discretely Sampled Functional Data, Scand. J. Statist. (50), 411--451.
