@@ -71,7 +71,7 @@ for(k in 1:nsim){
   # -------------------------------
   # Plot a single simulation
   # -------------------------------
-  par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
+  par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0), mfrow = c(1,1))
   plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, 
        ylab = "", xlab = "t", ylim = c(-1.2, 1.2)); grid()
   lines(t_grid, fit.pensp$mu, lwd = 3, col = "blue")
