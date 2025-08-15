@@ -1,9 +1,7 @@
 require(fda) 
 require(Rcpp) 
 require(RcppArmadillo)
-setwd("C:/Users/ik77w/Documents")
-Rcpp::sourceCpp("irls_gcv_cpp_pensp.cpp")
-# Rcpp::sourceCpp("combined.cpp")
+Rcpp::sourceCpp("combined.cpp")
 quan_smsp <- function(Y, alpha = 0.5, r = 2,
                       lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50)),
                       max_it = 100, tol = 1e-6, tun = 1e-3) {
