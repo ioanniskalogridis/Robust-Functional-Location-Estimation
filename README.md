@@ -9,11 +9,11 @@ Here are detailed instructions:
 
 Here is an example of their use in R with simulated discretely sampled functional data:
 
-'''r
+```r
 set.seed(1)
 n    <- 100
 p    <- 50
-'''
+
 t_grid <- seq(0, 1, length.out = p)
 Y <- matrix(NA, nrow = n, ncol = p)
 
@@ -48,7 +48,7 @@ mu_grid <- mu_true(t_grid)
        ylim = c(-1.2, 1.2)) ; grid()
   lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
-  
+```
 If the measurement errors follow a light-tailed distribution but for heavier tailed measurement errors the situation changes drastically:
 
  set.seed(1)
