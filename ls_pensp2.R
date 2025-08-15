@@ -3,8 +3,8 @@ require(Rcpp)
 require(RcppArmadillo)
 Rcpp::sourceCpp("combined.cpp")
 ls_pensp <- function(Y, r = 2, m = 4, K = 30, lambda_grid = exp(seq(log(1e-8), log(1e-1), 
-                                                                     length.out = 50)), verbose = TRUE) { 
-
+                                                                    length.out = 50))) { 
+  
   Y <- as.matrix(Y) 
   Y <- Y[rowSums(!is.na(Y)) > 0, , drop = FALSE] 
   n <- nrow(Y) 
