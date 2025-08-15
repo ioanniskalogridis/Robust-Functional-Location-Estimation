@@ -1,9 +1,7 @@
 require(fda) 
 require(Rcpp) 
 require(RcppArmadillo)
-setwd("C:/Users/ik77w/Documents")
-sourceCpp("ls_pensp_cpp2.cpp")
-# Rcpp::sourceCpp("combined.cpp")
+Rcpp::sourceCpp("combined.cpp")
 ls_pensp <- function(Y, r = 2, m = 4, K = 30, lambda_grid = exp(seq(log(1e-8), log(1e-1), 
                                                                      length.out = 50)), verbose = TRUE) { 
 
