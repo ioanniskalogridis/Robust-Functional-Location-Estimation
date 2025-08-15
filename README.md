@@ -17,9 +17,10 @@ source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
 ```
 
-6. These R functions will source the combined.cpp file containing the C++ implementations; no C++ knowledge is required.
+5. These R functions will source the combined.cpp file containing the C++ implementations; no C++ knowledge is required.
 
-Here is an example of their use in R with simulated discretely sampled functional data:
+All examples below use simulated discretely sampled functional data. No external datasets are required.
+
 
 ```r
 set.seed(2)
