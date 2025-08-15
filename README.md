@@ -8,7 +8,7 @@ Here are detailed instructions:
 4. These R functions will source the combined.cpp file containing the C++ implementations; no C++ knowledge is required.
 
 Here is an example of their use in R with simulated discretely sampled functional data:
-
+'''r
 set.seed(1)
 n    <- 100
 p    <- 50
@@ -47,7 +47,7 @@ mu_grid <- mu_true(t_grid)
        ylim = c(-1.2, 1.2)) ; grid()
   lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
   lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
-
+'''
 If the measurement errors follow a light-tailed distribution but for heavier tailed measurement errors the situation changes drastically:
 
  set.seed(1)
