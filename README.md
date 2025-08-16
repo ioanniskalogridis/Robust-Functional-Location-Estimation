@@ -2,8 +2,11 @@ This repository contains fast ```C++``` implementations with an ```R``` interfac
 Kalogridis and Van Aelst (2023, SJS). 
 
 Here are detailed instructions:
-1. First, download all the files in your ```R``` working directory.
-2. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp2.R``` (Least-Squares Penalized Spline Estimator).
+1. First, download all the files in your ```R``` working directory. This is at:
+```r
+getwd()
+```
+3. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp.R``` (Least-Squares Penalized Spline Estimator).
 
 ```r
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
@@ -11,7 +14,7 @@ source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp2.R")    # Least-Squares Penalized Spline Estimator
 ```
 
-4. Be sure to have installed and loaded the R-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
+4. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
 
 ```r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
@@ -65,7 +68,7 @@ If the measurement errors follow a light-tailed distribution, the estimators per
 
 <img width="1200" height="800" alt="Image" src="https://github.com/user-attachments/assets/c3955e99-7546-4033-80bb-352914ecdc7b" />
 
-But for heavier tailed measurement errors the situation changes drastically:
+But for heavier tailed measurement errors the situation changes dramatically:
 
 ```r
  set.seed(2)
@@ -92,4 +95,10 @@ But for heavier tailed measurement errors the situation changes drastically:
 ```
 <img width="1200" height="800" alt="Image" src="https://github.com/user-attachments/assets/812a573f-45a4-4b32-a1df-017f7b5f2f5b" />
 
-Please see the ```R```-functions for complete documentation of the settings/options and get in contact with me at ioannis.kalogridis@glasgow.ac.uk for any issues/questions.
+Please see the ```R```-functions for complete documentation of the settings/options. 
+
+Get in contact with me at ioannis.kalogridis@glasgow.ac.uk for any issues/questions or suggestions.
+
+## References
+1. Kalogridis, I. (2025+) Penalized Spline M-Estimators for Discretely Sampled Functional Data: Existence and Asymptotics.
+2. Kalogridis, I. and Van Aelst, S. (2023) Robust Optimal Estimation of Location from Discretely Sampled Functional Data, Scand. J. Statist. (50), 411--451.
