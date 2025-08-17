@@ -6,7 +6,7 @@ Here are detailed instructions:
 ```r
 getwd()
 ```
-3. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp.R``` (Least-Squares Penalized Spline Estimator).
+2. Load the R-functions ```quad_smsp.R``` (Quantile Smoothing Spline Estimator), ```quad_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp.R``` (Least-Squares Penalized Spline Estimator).
 
 ```r
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
@@ -14,7 +14,7 @@ source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp.R")    # Least-Squares Penalized Spline Estimator
 ```
 
-4. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
+3. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
 
 ```r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
@@ -22,9 +22,7 @@ install.packages(c("fda", "Rcpp", "RcppArmadillo"))
 library(fda);library(Rcpp);library(RcppArmadillo)
 ```
 
-
-
-5. These ```R``` functions will source the ```combined.cpp``` file containing the ```C++``` implementations; no ```C++``` knowledge is required.
+4. These ```R``` functions will source the ```combined.cpp``` file containing the ```C++``` implementations; no ```C++``` knowledge is required.
 
 All examples below use simulated discretely sampled functional data. No external datasets are required.
 
