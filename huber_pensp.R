@@ -56,14 +56,14 @@ huber_pensp <- function(Y, r = 2, m = 4, K = 30,
   
   # IRLS + GCV
   # Fit the penalized quantile regression using the C++ routine
-  fit <- irls_gcv_cpp_pensp(B, Pen, y_obs, weights_per_obs, alpha,
+  fit <- irls_gcv_cpp_huber(B, Pen, y_obs, weights_per_obs, alpha,
                             lambda_grid, max_it, tol, tun)
   
   # Estimated quantile function on full grid
   mu_est <- eval.basis(t_grid, b_basis) %*% fit$beta_hat
   
   return(list(
-    mu = mu_est,       # estimated quantile function
+    mu = mu_est,       # estimated Huber functional
     lambda = fit$lambda,  # selected smoothing parameter
     weights = fit$weights # observation weights used in IRLS
   ))
