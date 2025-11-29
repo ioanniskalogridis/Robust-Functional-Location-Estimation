@@ -7,19 +7,19 @@
 #   2. Least-squares penalized spline estimator (ls_pensp)
 #   3. Quantile penalized spline estimator (quan_pensp)
 # ----------------------------------------------------------------------
-
+setwd("C:/Users/ik77w/OneDrive - University of Glasgow/Documents/GitHub/Robust-Functional-Location-Estimation")
 # Number of simulations (500 in the paper)
-nsim <- 20
+nsim <- 5
 
 # Number of subjects and number of measurement points
 n <- 100
 p <- 50
 
 # Initialize storage for mean squared errors
-mse.smsp <- mse.pensp <- mse.lspensp <- rep(0, nsim)
+mse.smsp <- mse.pensp <- mse.lspensp <- mse.huber <- rep(0, nsim)
 
 # Initialize storage for estimated curves
-shapes.smsp <- shapes.pensp <- shapes.lspensp <- matrix(0, ncol = nsim, nrow = p)
+shapes.smsp <- shapes.pensp <- shapes.lspensp <- shapes.huber <- matrix(0, ncol = nsim, nrow = p)
 
 # Grid of measurement points
 t_grid <- seq(0, 1, length.out = p)
@@ -57,38 +57,43 @@ for(k in 1:nsim){
     zeta <- 0.5 * rt(m_i, df = 1)
     Y[i, idx] <- X[i, idx] + zeta
   }
-  par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
-  matplot(t_grid,t(X), pch = 20, col = "gray", cex = 1.1, xlab = "t", 
-          ylab = "", ylim = c(-4.5, 4.5), cex.lab = 1.5, cex.axis = 1.5) ; grid()
-  lines(t_grid, mu_grid, lwd = 3, col = "black")
+  # # par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
+  # matplot(t_grid,t(X), pch = 20, col = "gray", cex = 1.1, xlab = "t", 
+          # ylab = "", ylim = c(-4.5, 4.5), cex.lab = 1.5, cex.axis = 1.5) ; grid()
+  # lines(t_grid, mu_grid, lwd = 3, col = "black")
   
   # Fit estimators
   # Uncomment if you want to include the smoothing-spline quantile estimator
   # fit.smsp <- quan_smsp(Y, alpha = 0.5)
   
-  fit.lspensp <- ls_pensp(Y, K = 30)            # Least-squares penalized spline
-  fit.pensp  <- quan_pensp(Y, alpha = 0.5, K = 30)  # Quantile penalized spline
+  # fit.lspensp <- ls_pensp(Y, K = 30)            # Least-squares penalized spline
+  # fit.pensp  <- quan_pensp(Y, alpha = 0.5, K = 30)  # Quantile penalized spline
+  fit.huber <- huber_pensp(Y, K = 30)
   
   # -------------------------------
   # Plot a single simulation
   # -------------------------------
   par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0), mfrow = c(1,1))
-  plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, 
+  plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5,
        ylab = "", xlab = "t", ylim = c(-1.2, 1.2)); grid()
-  lines(t_grid, fit.pensp$mu, lwd = 3, col = "blue")
-  lines(t_grid, fit.lspensp$mu, lwd = 3, col = "red")
+  lines(t_grid, fit.huber$mu, lwd = 3, col = "blue")
+  # lines(t_grid, fit.pensp$mu, lwd = 3, col = "blue")
+  # lines(t_grid, fit.lspensp$mu, lwd = 3, col = "red")
+  
   
   # -------------------------------
   # Compute Mean Squared Errors
   # -------------------------------
   # mse.smsp[k] <- mean((fit.smsp$mu - mu_grid)^2)
   mse.pensp[k] <- mean((fit.pensp$mu - mu_grid)^2)
+  mse.huber[k] <- mean((fit.huber$mu - mu_grid)^2)
   mse.lspensp[k] <- mean((fit.lspensp$mu - mu_grid)^2)
   
   # Store estimated curves
   # shapes.smsp[, k] <- fit.smsp$mu
-  shapes.pensp[, k] <- fit.pensp$mu
-  shapes.lspensp[, k] <- fit.lspensp$mu
+  # shapes.pensp[, k] <- fit.pensp$mu
+  # shapes.lspensp[, k] <- fit.lspensp$mu
+  shapes.huber[, k] <- fit.huber$mu
 }
 
 # Summarize Results
