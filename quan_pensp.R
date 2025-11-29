@@ -15,7 +15,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
                        lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50)),
                        max_it = 100, tol = 1e-6, tun = 1e-3) {
   
-  # --- Preprocessing ---
+  # - Preprocessing -
   # Convert input to matrix and remove rows with all NA
   Y <- as.matrix(Y)
   Y <- Y[rowSums(!is.na(Y)) > 0, , drop = FALSE]
@@ -24,6 +24,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   p <- ncol(Y)  # number of measurement points per subject
   
   # Uniform grid of measurement points from 0 to 1
+  # (for the knots)
   t_grid <- seq(0, 1, length.out = p)
   
   # Map observations to their time points
