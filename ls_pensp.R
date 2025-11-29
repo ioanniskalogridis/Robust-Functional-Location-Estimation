@@ -2,8 +2,9 @@
 # ls_pensp: Least-Squares Penalized Spline Estimator
 # ----------------------------------------------------------------------
 # This function estimates the mean function of discretely sampled
-# functional data using B-splines and a roughness penalty.
+# functional data using B-splines and an O-spline roughness penalty.
 # Computation is performed via a fast C++ routine.
+# Please find detailed documentation below.
 # ----------------------------------------------------------------------
 
 require(fda)           # For B-spline basis and penalty functions
