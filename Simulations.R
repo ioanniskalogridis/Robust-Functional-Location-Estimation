@@ -6,6 +6,7 @@
 #   1. Smoothing-spline quantile estimator (quan_smsp)
 #   2. Least-squares penalized spline estimator (ls_pensp)
 #   3. Quantile penalized spline estimator (quan_pensp)
+#   4. Huber penalized spline estimator (huber_pensp)
 # ----------------------------------------------------------------------
 setwd("C:/Users/ik77w/OneDrive - University of Glasgow/Documents/GitHub/Robust-Functional-Location-Estimation")
 # Number of simulations (500 in the paper)
@@ -64,7 +65,6 @@ for(k in 1:nsim){
   
   # Fit estimators
   fit.smsp <- quan_smsp(Y, alpha = 0.5)
-  
   fit.lspensp <- ls_pensp(Y, K = 30)            # Least-squares penalized spline
   fit.pensp  <- quan_pensp(Y, alpha = 0.5, K = 30)  # Quantile penalized spline
   fit.huber <- huber_pensp(Y, K = 30)
@@ -85,8 +85,8 @@ for(k in 1:nsim){
   # -------------------------------
   mse.smsp[k] <- mean((fit.smsp$mu - mu_grid)^2)
   mse.pensp[k] <- mean((fit.pensp$mu - mu_grid)^2)
-  mse.huber[k] <- mean((fit.huber$mu - mu_grid)^2)
   mse.lspensp[k] <- mean((fit.lspensp$mu - mu_grid)^2)
+  mse.huber[k] <- mean((fit.huber$mu - mu_grid)^2)
   
   # Store estimated curves
   shapes.smsp[, k] <- fit.smsp$mu
