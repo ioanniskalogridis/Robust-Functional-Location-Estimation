@@ -90,7 +90,7 @@ List irls_gcv_cpp_pensp(const mat& B,
     vec beta = solve(
         (B_transpose.each_row() % weights_per_obs.t()) * B + 2 * lambda * Pen,
         B_transpose * (weights_per_obs % y),
-        solve_opts::fast // PD due to penalty
+        solve_opts::fast
     );
 
     vec resid = y - B * beta;
@@ -147,6 +147,97 @@ List irls_gcv_cpp_pensp(const mat& B,
 
     mat XtWX = XtW * B + 2 * lambda * Pen;
     mat S = solve(XtWX, XtW, solve_opts::fast); // (4)
+    double trace_S = trace(B * S);
+    double gcv = mean(w % square(resid)) / std::pow(1 - trace_S / m, 2);
+
+    if (gcv < best_gcv) {
+      best_gcv = gcv;
+      best_beta = beta;
+      best_weights = weights;
+      best_lambda = lambda;
+    }
+  }
+
+  return List::create(
+    _["beta_hat"] = best_beta,
+    _["weights"] = best_weights,
+    _["lambda"] = best_lambda
+  );
+}
+
+// [[Rcpp::depends(RcppArmadillo)]]
+
+// [[Rcpp::export]]
+List irls_gcv_cpp_huber(const mat& B,
+                        const mat& Pen,
+                        const vec& y,
+                        const vec& weights_per_obs,
+                        NumericVector lambda_grid,
+                        int max_it,
+                        double tol,
+                        double tuning) { // tuning = Huber c
+
+  int m = y.n_elem;
+  int k = B.n_cols;
+
+  vec best_beta(k, fill::zeros), best_weights(m);
+  double best_gcv = datum::inf, best_lambda = 0;
+
+  mat B_transpose = B.t();
+
+  for (int lg = 0; lg < lambda_grid.size(); ++lg) {
+    double lambda = lambda_grid[lg];
+
+    vec beta = solve(
+        (B_transpose.each_row() % weights_per_obs.t()) * B + 2 * lambda * Pen,
+        B_transpose * (weights_per_obs % y),
+        solve_opts::fast
+    );
+
+    vec resid = y - B * beta;
+    vec weights(m);
+
+    vec w;
+    mat XtW;
+
+    int it = 0;
+    for (; it < max_it; ++it) {
+      // IRLS weights for Huber
+      for (int i = 0; i < m; ++i) {
+        if (std::abs(resid[i]) <= tuning) {
+          weights[i] = 1.0;
+        } else {
+          weights[i] = tuning / std::abs(resid[i]);
+        }
+      }
+
+      w = weights_per_obs % weights;
+
+      XtW = B_transpose.each_row() % w.t();
+      mat XtWB = XtW * B;
+      vec rhs = B_transpose * (w % y);
+
+      vec beta_new = solve(XtWB + 2 * lambda * Pen, rhs, solve_opts::fast);
+      vec resid_new = y - B * beta_new;
+
+      if (max(abs(resid_new - resid)) < tol) {
+        beta = beta_new;
+        resid = resid_new;
+        break;
+      }
+
+      beta = beta_new;
+      resid = resid_new;
+    }
+
+    if (XtW.n_elem == 0) {
+      vec w0 = weights_per_obs;
+      XtW = B_transpose.each_row() % w0.t();
+      w = w0;
+    }
+
+    mat XtWX = XtW * B + 2 * lambda * Pen;
+    mat S = solve(XtWX, XtW, solve_opts::fast);
     double trace_S = trace(B * S);
     double gcv = mean(w % square(resid)) / std::pow(1 - trace_S / m, 2);
 
