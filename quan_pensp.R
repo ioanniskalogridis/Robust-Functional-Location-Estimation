@@ -2,8 +2,9 @@
 # quan_pensp: Quantile Penalized Spline Estimator
 # ----------------------------------------------------------------------
 # This function estimates the conditional quantile function of 
-# discretely sampled functional data using B-splines and a roughness 
+# discretely sampled functional data using B-splines and an O-spline roughness 
 # penalty. Computation is performed via a fast C++ routine.
+# For details, please see the documentation below.
 # ----------------------------------------------------------------------
 
 require(fda)           # For B-spline basis and penalty functions
@@ -24,7 +25,6 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   p <- ncol(Y)  # number of measurement points per subject
   
   # Uniform grid of measurement points from 0 to 1
-  # (for the knots)
   t_grid <- seq(0, 1, length.out = p)
   
   # Map observations to their time points
@@ -55,7 +55,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
   # --- IRLS + GCV ---
-  # Fit the penalized quantile regression using C++ routine
+  # Fit the penalized quantile regression using the C++ routine
   fit <- irls_gcv_cpp_pensp(B, Pen, y_obs, weights_per_obs, alpha,
                             lambda_grid, max_it, tol, tun)
   
