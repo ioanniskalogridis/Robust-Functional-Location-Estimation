@@ -50,11 +50,11 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   # Evaluate B-spline basis at observed points
   B <- eval.basis(t_obs, b_basis)
   
-  # --- Penalty Matrix ---
+  # Penalty Matrix from the fda package 
   # Roughness penalty on r-th derivative
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
-  # --- IRLS + GCV ---
+  # IRLS + GCV
   # Fit the penalized quantile regression using the C++ routine
   fit <- irls_gcv_cpp_pensp(B, Pen, y_obs, weights_per_obs, alpha,
                             lambda_grid, max_it, tol, tun)
@@ -62,7 +62,6 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   # Estimated quantile function on full grid
   mu_est <- eval.basis(t_grid, b_basis) %*% fit$beta_hat
   
-  # --- Return Results ---
   return(list(
     mu = mu_est,       # estimated quantile function
     lambda = fit$lambda,  # selected smoothing parameter
