@@ -45,7 +45,7 @@ for(k in 1:nsim){
   for(i in 1:n){
     X[i,] <- mu_grid
     for(j in 1:50){ 
-      X[i,] <- X[i,] + sqrt(2) * rt(1, df = 500000) * 
+      X[i,] <- X[i,] + sqrt(2) * rt(1, df = 5) * 
         sapply(t_grid, FUN = function(x) sin((j-0.5)*pi*x)/((j-0.5)*pi))
     }
     
@@ -57,9 +57,10 @@ for(k in 1:nsim){
     zeta <- 0.5 * rt(m_i, df = 1)
     Y[i, idx] <- X[i, idx] + zeta
   }
-  # par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
-  # matplot(t_grid,t(X), pch = 20, col = "gray", cex = 1.1, xlab = "t", ylab = "", ylim = c(-4.5, 4.5)) ; grid()
-  # lines(t_grid, mu_grid, lwd = 3, col = "black")
+  par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
+  matplot(t_grid,t(X), pch = 20, col = "gray", cex = 1.1, xlab = "t", 
+          ylab = "", ylim = c(-4.5, 4.5), cex.lab = 1.5, cex.axis = 1.5) ; grid()
+  lines(t_grid, mu_grid, lwd = 3, col = "black")
   
   # Fit estimators
   # Uncomment if you want to include the smoothing-spline quantile estimator
