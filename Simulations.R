@@ -29,18 +29,17 @@ Y <- matrix(NA, nrow = n, ncol = p)
 
 # Define true population mean function
 mu_true <- function(t) sin(2 * pi * t) # Easy example
-# Harder example (optional):
+# Harder example (mu_2 in the paper)
 # mu_true <- function(t) exp(-(t-0.25)^2/0.01)+exp(-(t-0.50)^2/0.01)+exp(-(t-0.75)^2/0.01)
 
 mu_grid <- mu_true(t_grid)
 
-# -------------------------------
 # Main Simulation Loop
-# -------------------------------
+
 for(k in 1:nsim){
   print(paste("Simulation", k, "of", nsim))
   
-  # Generate latent functional data for n subjects
+  # Generate functional data for n subjects
   X <- matrix(NA, nrow = n, ncol = p)
   
   for(i in 1:n){
@@ -59,10 +58,8 @@ for(k in 1:nsim){
     Y[i, idx] <- X[i, idx] + zeta
   }
   
-  # -------------------------------
   # Fit estimators
-  # -------------------------------
-  # Uncomment if you want to include smoothing-spline quantile estimator
+  # Uncomment if you want to include the smoothing-spline quantile estimator
   # fit.smsp <- quan_smsp(Y, alpha = 0.5)
   
   fit.lspensp <- ls_pensp(Y, K = 30)            # Least-squares penalized spline
@@ -90,17 +87,13 @@ for(k in 1:nsim){
   shapes.lspensp[, k] <- fit.lspensp$mu
 }
 
-# -------------------------------
 # Summarize Results
-# -------------------------------
 # Mean and standard error of MSE
 # mean(mse.smsp, na.rm = TRUE) * 1000; 1000 * sd(mse.smsp, na.rm = TRUE)/sqrt(nsim)
 mean(mse.pensp, na.rm = TRUE) * 1000; 1000 * sd(mse.pensp, na.rm = TRUE)/sqrt(nsim)
 mean(mse.lspensp, na.rm = TRUE) * 1000; 1000 * sd(mse.lspensp, na.rm = TRUE)/sqrt(nsim)
 
-# -------------------------------
 # Visualize Estimated Curves Across Simulations
-# -------------------------------
 par(mfrow = c(1, 2))
 matplot(t_grid, shapes.pensp, lwd = 3, col = "gray", type = "l", lty = 1)
 lines(t_grid, mu_grid, lwd = 3, col = "black")
