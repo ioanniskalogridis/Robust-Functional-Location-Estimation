@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 setwd("C:/Users/ik77w/OneDrive - University of Glasgow/Documents/GitHub/Robust-Functional-Location-Estimation")
 # Number of simulations (500 in the paper)
-nsim <- 5
+nsim <- 50
 
 # Number of subjects and number of measurement points
 n <- 100
@@ -63,20 +63,19 @@ for(k in 1:nsim){
   # lines(t_grid, mu_grid, lwd = 3, col = "black")
   
   # Fit estimators
-  # Uncomment if you want to include the smoothing-spline quantile estimator
-  # fit.smsp <- quan_smsp(Y, alpha = 0.5)
+  fit.smsp <- quan_smsp(Y, alpha = 0.5)
   
-  # fit.lspensp <- ls_pensp(Y, K = 30)            # Least-squares penalized spline
-  # fit.pensp  <- quan_pensp(Y, alpha = 0.5, K = 30)  # Quantile penalized spline
+  fit.lspensp <- ls_pensp(Y, K = 30)            # Least-squares penalized spline
+  fit.pensp  <- quan_pensp(Y, alpha = 0.5, K = 30)  # Quantile penalized spline
   fit.huber <- huber_pensp(Y, K = 30)
   
   # -------------------------------
   # Plot a single simulation
   # -------------------------------
-  par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0), mfrow = c(1,1))
-  plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5,
-       ylab = "", xlab = "t", ylim = c(-1.2, 1.2)); grid()
-  lines(t_grid, fit.huber$mu, lwd = 3, col = "blue")
+  # par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0), mfrow = c(1,1))
+  # plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5,
+       # ylab = "", xlab = "t", ylim = c(-1.2, 1.2)); grid()
+  # lines(t_grid, fit.huber$mu, lwd = 3, col = "blue")
   # lines(t_grid, fit.pensp$mu, lwd = 3, col = "blue")
   # lines(t_grid, fit.lspensp$mu, lwd = 3, col = "red")
   
@@ -84,23 +83,25 @@ for(k in 1:nsim){
   # -------------------------------
   # Compute Mean Squared Errors
   # -------------------------------
-  # mse.smsp[k] <- mean((fit.smsp$mu - mu_grid)^2)
+  mse.smsp[k] <- mean((fit.smsp$mu - mu_grid)^2)
   mse.pensp[k] <- mean((fit.pensp$mu - mu_grid)^2)
   mse.huber[k] <- mean((fit.huber$mu - mu_grid)^2)
   mse.lspensp[k] <- mean((fit.lspensp$mu - mu_grid)^2)
   
   # Store estimated curves
-  # shapes.smsp[, k] <- fit.smsp$mu
-  # shapes.pensp[, k] <- fit.pensp$mu
-  # shapes.lspensp[, k] <- fit.lspensp$mu
+  shapes.smsp[, k] <- fit.smsp$mu
+  shapes.pensp[, k] <- fit.pensp$mu
+  shapes.lspensp[, k] <- fit.lspensp$mu
   shapes.huber[, k] <- fit.huber$mu
 }
 
 # Summarize Results
 # Mean and standard error of MSE
-# mean(mse.smsp, na.rm = TRUE) * 1000; 1000 * sd(mse.smsp, na.rm = TRUE)/sqrt(nsim)
+mean(mse.smsp, na.rm = TRUE) * 1000; 1000 * sd(mse.smsp, na.rm = TRUE)/sqrt(nsim)
 mean(mse.pensp, na.rm = TRUE) * 1000; 1000 * sd(mse.pensp, na.rm = TRUE)/sqrt(nsim)
 mean(mse.lspensp, na.rm = TRUE) * 1000; 1000 * sd(mse.lspensp, na.rm = TRUE)/sqrt(nsim)
+mean(mse.huber, na.rm = TRUE) * 1000; 1000 * sd(mse.huber, na.rm = TRUE)/sqrt(nsim)
+
 
 # Visualize Estimated Curves Across Simulations
 par(mfrow = c(1, 2))
@@ -109,5 +110,10 @@ lines(t_grid, mu_grid, lwd = 3, col = "black")
 grid()
 
 matplot(t_grid, shapes.lspensp, lwd = 3, col = "gray", type = "l", lty = 1)
+lines(t_grid, mu_grid, lwd = 3, col = "black")
+grid()
+
+par(mfrow = c(1, 1))
+matplot(t_grid, shapes.huber, lwd = 3, col = "gray", type = "l", lty = 1)
 lines(t_grid, mu_grid, lwd = 3, col = "black")
 grid()
