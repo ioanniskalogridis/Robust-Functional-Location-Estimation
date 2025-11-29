@@ -175,7 +175,7 @@ List irls_gcv_cpp_huber(const mat& B,
                         NumericVector lambda_grid,
                         int max_it,
                         double tol,
-                        double tuning) { // tuning = Huber c
+                        double tuning) { 
 
   int m = y.n_elem;
   int k = B.n_cols;
