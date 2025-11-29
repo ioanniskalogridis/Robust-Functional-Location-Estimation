@@ -26,13 +26,13 @@ ls_pensp <- function(Y, r = 2, m = 4, K = 30,
   # Create a uniform grid for the measurements (0 to 1)
   t_grid <- seq(0, 1, length.out = p)
   
-  # Map each observation to its time point
+  # Map each observation to its discretization point
   T_mat <- matrix(rep(t_grid, each = n), nrow = n)
   obs_idx <- which(!is.na(Y))      # indices of observed entries
   t_obs <- T_mat[obs_idx]          # time points of observed entries
   y_obs <- as.numeric(Y[obs_idx])  # observed values
   
-  # --- Weights ---
+  # --- Weights
   # Compute number of measurements per subject
   m_i <- rowSums(!is.na(Y))
   
@@ -42,8 +42,8 @@ ls_pensp <- function(Y, r = 2, m = 4, K = 30,
   # Assign weight 1/(n * m_i) to each observation
   weights_per_obs <- 1 / (n * m_i[row_id])
   
-  # --- Basis Construction ---
-  # Use B-spline basis with K basis functions and order m
+  # --- Basis Construction 
+  # Use B-spline basis with K basis functions from equidistant knots and order m
   b_basis <- create.bspline.basis(rangeval = c(0, 1), nbasis = K, norder = m)
   
   # Evaluate B-spline basis at observed times
@@ -53,8 +53,7 @@ ls_pensp <- function(Y, r = 2, m = 4, K = 30,
   # Roughness penalty on r-th derivative
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
-  # --- Fit ---
-  # Solve penalized least squares using fast C++ routine
+  # Solve penalized least squares using the fast C++ routine
   res <- ls_pensp_cpp2(B, Pen, y_obs, weights_per_obs, lambda_grid)
   
   # Compute estimated mean function on full grid
