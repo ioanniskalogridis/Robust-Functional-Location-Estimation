@@ -19,6 +19,7 @@ Rcpp::List ls_pensp_cpp2(const arma::mat& B,
   double best_lambda = 0;
   
   // Avoid building diagmat(W) — scale rows of B^T by weights_per_obs
+  // Way more efficient...
    arma::mat Bt = B.t();
    arma::mat BtW = Bt.each_row() % weights_per_obs.t();
    arma::mat BtWB_base = BtW * B;
@@ -34,7 +35,7 @@ Rcpp::List ls_pensp_cpp2(const arma::mat& B,
     arma::vec fitted = B * beta;
     arma::vec resid = y - fitted;
     
-    // Compute trace_S without forming H = B * Ainv * BtW
+    // trace_S without forming H = B * Ainv * BtW
     double trace_S = 0.0;
     for (int j = 0; j < k; ++j) {
       arma::vec col = BtWB_base.col(j);
@@ -85,7 +86,7 @@ List irls_gcv_cpp_pensp(const mat& B,
   for (int lg = 0; lg < lambda_grid.size(); ++lg) {
     double lambda = lambda_grid[lg];
 
-    // Initial solve with only weights_per_obs
+    // Initial with only weights_per_obs
     vec beta = solve(
         (B_transpose.each_row() % weights_per_obs.t()) * B + 2 * lambda * Pen,
         B_transpose * (weights_per_obs % y),
@@ -95,7 +96,7 @@ List irls_gcv_cpp_pensp(const mat& B,
     vec resid = y - B * beta;
     vec weights(m);
 
-    // Will hold XtW from the last IRLS iteration (for reuse in GCV)
+    // Save XtW from the last IRLS iteration for the GCV
     vec w;
     mat XtW;
 
@@ -138,7 +139,6 @@ List irls_gcv_cpp_pensp(const mat& B,
     }
 
     // Final GCV — reuse XtW computed in the last IRLS iteration (1)
-    // If the loop never ran (rare), fall back to weights_per_obs
     if (XtW.n_elem == 0) {
       vec w0 = weights_per_obs;
       XtW = B_transpose.each_row() % w0.t();
