@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 # huber_pensp: Huber Penalized Spline Estimator
 # ----------------------------------------------------------------------
-# This function estimates the conditional Huber functional of 
+# This function estimates the conditional Huber functional of
 # discretely sampled functional data using B-splines and an O-spline roughness 
 # penalty. Computation is performed via a fast C++ routine.
 # For details, please see the documentation below.
@@ -57,7 +57,7 @@ huber_pensp <- function(Y, r = 2, m = 4, K = 30,
   # IRLS + GCV
   # Fit the penalized quantile regression using the C++ routine
   fit <- irls_gcv_cpp_huber(B, Pen, y_obs, weights_per_obs, alpha,
-                            lambda_grid, max_it, tol, tun)
+                            lambda_grid, max_it, tol, tuning = tun)
   
   # Estimated quantile function on full grid
   mu_est <- eval.basis(t_grid, b_basis) %*% fit$beta_hat
