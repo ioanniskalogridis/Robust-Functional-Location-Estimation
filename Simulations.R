@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-# Simulation Study: Section 4 of Kalogridis (2025+)
+# Simulation Study: Section 5 of Kalogridis (2025+)
 # ----------------------------------------------------------------------
 # This script simulates discretely sampled functional data, adds
 # noise, and compares 4 estimators:
