@@ -56,56 +56,57 @@ for(k in 1:nsim){
     # zeta <- 0
     Y[i, idx] <- X[i, idx] + zeta
   }
-    # Fit estimators
-    fit.smsp <- quan_smsp(Y) # LAD smoothing splines
-    fit.lspensp <- ls_pensp(Y)            # Least squares penalized splines
-    fit.pensp  <- quan_pensp(Y)  # LAD penalized splines
-    fit.huber <- huber_pensp(Y) # Huber penalized splines
-    
-    # Plot a single simulation
-    par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0), mfrow = c(1,1))
-    plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5,
-         ylab = "", xlab = "t", ylim = c(-1.2, 1.2)); grid()
-    lines(t_grid, fit.huber$mu, lwd = 3, col = "blue")
-    lines(t_grid, fit.pensp$mu, lwd = 3, col = "orange")
-    lines(t_grid, fit.lspensp$mu, lwd = 3, col = "red")
-    
-    
-    # Compute Mean Squared Errors
-    mse.smsp[k] <- mean((fit.smsp$mu - mu_grid)^2)
-    mse.pensp[k] <- mean((fit.pensp$mu - mu_grid)^2)
-    mse.lspensp[k] <- mean((fit.lspensp$mu - mu_grid)^2)
-    mse.huber[k] <- mean((fit.huber$mu - mu_grid)^2)
-    
-    # Store estimated curves
-    shapes.smsp[, k] <- fit.smsp$mu
-    shapes.pensp[, k] <- fit.pensp$mu
-    shapes.lspensp[, k] <- fit.lspensp$mu
-    shapes.huber[, k] <- fit.huber$mu
-  }
+  # Fit estimators
+  fit.smsp <- quan_smsp(Y) # LAD smoothing splines
+  fit.lspensp <- ls_pensp(Y)            # Least squares penalized splines
+  fit.pensp  <- quan_pensp(Y)  # LAD penalized splines
+  fit.huber <- huber_pensp(Y) # Huber penalized splines
   
-  # Summarize Results
-  # Mean and standard error of MSE
-  mean(mse.smsp, na.rm = TRUE) * 1000; 1000 * sd(mse.smsp, na.rm = TRUE)/sqrt(nsim)
-  mean(mse.pensp, na.rm = TRUE) * 1000; 1000 * sd(mse.pensp, na.rm = TRUE)/sqrt(nsim)
-  mean(mse.lspensp, na.rm = TRUE) * 1000; 1000 * sd(mse.lspensp, na.rm = TRUE)/sqrt(nsim)
-  mean(mse.huber, na.rm = TRUE) * 1000; 1000 * sd(mse.huber, na.rm = TRUE)/sqrt(nsim)
+  # Plot a single simulation
+  par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0), mfrow = c(1,1))
+  plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5,
+       ylab = "", xlab = "t", ylim = c(-1.2, 1.2)); grid()
+  lines(t_grid, fit.huber$mu, lwd = 3, col = "blue")
+  lines(t_grid, fit.pensp$mu, lwd = 3, col = "orange")
+  lines(t_grid, fit.lspensp$mu, lwd = 3, col = "red")
   
   
-  # Visualize Estimated Curves Across Simulations
-  par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
-  matplot(t_grid, shapes.pensp, lwd = 3, col = "gray", type = "l", lty = 1, cex.lab = 1.5, cex.axis = 1.5,
-          ylab = "", xlab = "t", ylim = c(-1,1)) # ylim = c(-1,1) or ylim = c(-0.5,1.3)
-  lines(t_grid, mu_grid, lwd = 3, col = "black")
-  grid()
+  # Compute Mean Squared Errors
+  mse.smsp[k] <- mean((fit.smsp$mu - mu_grid)^2)
+  mse.pensp[k] <- mean((fit.pensp$mu - mu_grid)^2)
+  mse.lspensp[k] <- mean((fit.lspensp$mu - mu_grid)^2)
+  mse.huber[k] <- mean((fit.huber$mu - mu_grid)^2)
   
-  par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
-  matplot(t_grid, shapes.lspensp, lwd = 3, col = "gray", type = "l", lty = 1,cex.lab = 1.5, cex.axis = 1.5,
-          ylab = "", xlab = "t", ylim = c(-1, 1))
-  lines(t_grid, mu_grid, lwd = 3, col = "black")
-  grid()
-  
-  par(mfrow = c(1, 1))
-  matplot(t_grid, shapes.huber, lwd = 3, col = "gray", type = "l", lty = 1)
-  lines(t_grid, mu_grid, lwd = 3, col = "black")
-  grid()
+  # Store estimated curves
+  shapes.smsp[, k] <- fit.smsp$mu
+  shapes.pensp[, k] <- fit.pensp$mu
+  shapes.lspensp[, k] <- fit.lspensp$mu
+  shapes.huber[, k] <- fit.huber$mu
+}
+
+# Summarize Results
+# Mean and standard error of MSE
+mean(mse.smsp, na.rm = TRUE) * 1000; 1000 * sd(mse.smsp, na.rm = TRUE)/sqrt(nsim)
+mean(mse.pensp, na.rm = TRUE) * 1000; 1000 * sd(mse.pensp, na.rm = TRUE)/sqrt(nsim)
+mean(mse.lspensp, na.rm = TRUE) * 1000; 1000 * sd(mse.lspensp, na.rm = TRUE)/sqrt(nsim)
+mean(mse.huber, na.rm = TRUE) * 1000; 1000 * sd(mse.huber, na.rm = TRUE)/sqrt(nsim)
+
+
+# Visualize Estimated Curves Across Simulations
+# 
+par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
+matplot(t_grid, shapes.pensp, lwd = 3, col = "gray", type = "l", lty = 1, cex.lab = 1.5, cex.axis = 1.5,
+        ylab = "", xlab = "t", ylim = c(-1,1)) # ylim = c(-1,1) or ylim = c(-0.5,1.3)
+lines(t_grid, mu_grid, lwd = 3, col = "black")
+grid()
+
+par(mar = c(4,3.5,2,2), mgp = c(1.5, 0.75, 0), mfrow = c(1,1))
+matplot(t_grid, shapes.lspensp, lwd = 3, col = "gray", type = "l", lty = 1,cex.lab = 1.5, cex.axis = 1.5,
+        ylab = "", xlab = "t", ylim = c(-1, 1))
+lines(t_grid, mu_grid, lwd = 3, col = "black")
+grid()
+
+par(mfrow = c(1, 1))
+matplot(t_grid, shapes.huber, lwd = 3, col = "gray", type = "l", lty = 1)
+lines(t_grid, mu_grid, lwd = 3, col = "black")
+grid()
