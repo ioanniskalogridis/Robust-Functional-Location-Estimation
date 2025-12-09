@@ -65,12 +65,32 @@ Y[i, idx] <- X[i, idx] + zeta
 
 fit.lspensp <- ls_pensp(Y) # Least squares penalized spline estimator
 fit.pensp <- quan_pensp(Y) # LAD penalized spline estimator
+```
 
-par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
-plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, ylab = "", xlab = "t",
-ylim = c(-1.2, 1.2)) ; grid()
-lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
-lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
+```{r message=FALSE, warning=FALSE, fig.width=8, fig.height=5, dpi=120}
+library(ggplot2)
+library(viridis)
+
+df <- data.frame(
+  t = rep(t_grid, 3),
+  value = c(mu_grid, fit.pensp$mu, fit.lspensp$mu),
+  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid)))
+)
+
+colors <- c("True" = "black", "LAD Pen. Spline" = viridis(2)[1], "LS Pen. Spline" = viridis(2)[2])
+line_types <- c("True" = "solid", "LAD Pen. Spline" = "dashed", "LS Pen. Spline" = "dotted")
+
+# Create ggplot
+ggplot(df, aes(x=t, y=value, color=method, linetype=method)) +
+  geom_line(size=1.2) +
+  theme_minimal(base_size = 16) +
+  labs(x="t", y="", title="") +
+  scale_color_manual(values = colors) +
+  scale_linetype_manual(values = line_types) + 
+  theme(legend.title = element_blank(),
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5)
+  )
 ```
 
 If the measurement errors follow a light-tailed distribution, the estimators perform comparably. 
@@ -94,12 +114,31 @@ Y[i, idx] <- X[i, idx] + zeta
 
 fit.lspensp <- ls_pensp(Y)
 fit.pensp <- quan_pensp(Y) 
+```
 
-par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
-plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, ylab = "", xlab = "t",
-ylim = c(-1.2, 1.2)) ; grid()
-lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
-lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
+```{r message=FALSE, warning=FALSE, fig.width=8, fig.height=5, dpi=120}
+library(ggplot2)
+library(viridis)
+
+df <- data.frame(
+  t = rep(t_grid, 3),
+  value = c(mu_grid, fit.pensp$mu, fit.lspensp$mu),
+  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid)))
+)
+
+colors <- c("True" = "black", "LAD Pen. Spline" = viridis(2)[1], "LS Pen. Spline" = viridis(2)[2])
+line_types <- c("True" = "solid", "LAD Pen. Spline" = "dashed", "LS Pen. Spline" = "dotted")
+
+ggplot(df, aes(x=t, y=value, color=method, linetype=method)) +
+  geom_line(size=1.2) +
+  theme_minimal(base_size = 16) +
+  labs(x="t", y="", title="") +
+  scale_color_manual(values = colors) +
+  scale_linetype_manual(values = line_types) + 
+  theme( legend.title = element_blank(),
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5)
+  )
 ```
 
 ## Notes
