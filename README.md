@@ -62,27 +62,44 @@ mu_grid <- mu_true(t_grid)
 X <- matrix(NA, nrow = n, ncol = p) # discretely sample functional data
 Y <- matrix(NA, nrow = n, ncol = p) # with measurement error 
 for(i in 1:n){
-X[i,] <- mu_grid 
-for(j in 1:50){ 
-X[i,] <- X[i, ] +  sqrt(2)*rt(1, df = 5)*sapply(t_grid, FUN = function(x) sin((j-1/2)*pi*x)/((j-1/2)*pi) )
-}
-m_i <- sample(floor(0.5 * p):floor(0.8 * p), 1)
-idx <- sort(sample(seq_len(p), m_i))
-zeta <- 0.5*rt(m_i, df = 10)
-Y[i, idx] <- X[i, idx] + zeta
-}
+  X[i,] <- mu_grid 
+  for(j in 1:50){ 
+    X[i,] <- X[i, ] +  sqrt(2)*rt(1, df = 5)*sapply(t_grid, FUN = function(x) sin((j-1/2)*pi*x)/((j-1/2)*pi) )
+  }
+  m_i <- sample(floor(0.5 * p):floor(0.8 * p), 1)
+  idx <- sort(sample(seq_len(p), m_i))
+  zeta <- 0.5*rt(m_i, df = 10)
+  Y[i, idx] <- X[i, idx] + zeta}
 
 fit.lspensp <- ls_pensp(Y) # Least squares penalized spline estimator
 fit.pensp <- quan_pensp(Y) # LAD penalized spline estimator
-
-par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
-plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, ylab = "", xlab = "t",
-ylim = c(-1.2, 1.2)) ; grid()
-lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
-lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+``` r
+library(ggplot2)
+library(viridis)
+
+df <- data.frame(
+  t = rep(t_grid, 3),
+  value = c(mu_grid, fit.pensp$mu, fit.lspensp$mu),
+  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid))))
+
+colors <- c("True" = "black", "LAD Pen. Spline" = viridis(2)[1], "LS Pen. Spline" = viridis(2)[2])
+line_types <- c("True" = "solid", "LAD Pen. Spline" = "dashed", "LS Pen. Spline" = "dotted")
+
+ggplot(df, aes(x=t, y=value, color=method, linetype=method)) +
+  geom_line(size=1.2) +
+  theme_minimal(base_size = 16) +
+  labs(x="t", y="", title="") + coord_cartesian(ylim=c(-1.2,1.2)) + 
+  scale_color_manual(values = colors) +
+  scale_linetype_manual(values = line_types) + 
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5)
+  )
+```
+
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 If the measurement errors follow a light-tailed distribution, the
 estimators perform comparably.
@@ -95,27 +112,37 @@ set.seed(2)
 X <- matrix(NA, nrow = n, ncol = p) 
 Y <- matrix(NA, nrow = n, ncol = p) 
 for(i in 1:n){
-X[i,] <- mu_grid 
-for(j in 1:50){ 
-X[i,] <- X[i, ] +  sqrt(2)*rt(1, df = 5)*sapply(t_grid, FUN = function(x) sin((j-1/2)*pi*x)/((j-1/2)*pi) )
-}
-m_i <- sample(floor(0.5 * p):floor(0.8 * p), 1)
-idx <- sort(sample(seq_len(p), m_i))
-zeta <- 0.5*rt(m_i, df = 1)
-Y[i, idx] <- X[i, idx] + zeta
-}
+  X[i,] <- mu_grid 
+  for(j in 1:50){ 
+    X[i,] <- X[i, ] +  sqrt(2)*rt(1, df = 5)*sapply(t_grid, FUN = function(x) sin((j-1/2)*pi*x)/((j-1/2)*pi) )
+  }
+  m_i <- sample(floor(0.5 * p):floor(0.8 * p), 1)
+  idx <- sort(sample(seq_len(p), m_i))
+  zeta <- 0.5*rt(m_i, df = 1)
+  Y[i, idx] <- X[i, idx] + zeta}
 
 fit.lspensp <- ls_pensp(Y)
 fit.pensp <- quan_pensp(Y) 
-
-par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
-plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, ylab = "", xlab = "t",
-ylim = c(-1.2, 1.2)) ; grid()
-lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
-lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+``` r
+df <- data.frame(
+  t = rep(t_grid, 3),
+  value = c(mu_grid, fit.pensp$mu, fit.lspensp$mu),
+  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid))))
+
+ggplot(df, aes(x=t, y=value, color=method, linetype=method)) +
+  geom_line(size=1.2) +
+  theme_minimal(base_size = 16) +
+  labs(x="t", y="", title="") + coord_cartesian(ylim=c(-1.2,1.2)) + 
+  scale_color_manual(values = colors) +
+  scale_linetype_manual(values = line_types) + 
+  theme( legend.title = element_blank(),
+         legend.position = "bottom",
+         plot.title = element_text(hjust = 0.5))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ## Notes
 
