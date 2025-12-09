@@ -7,8 +7,8 @@ well as a remake of the older smoothing spline estimator of Kalogridis
 and Van Aelst (2023, SJS).
 
 The computation is done with **Iteratively Reweighted Least-Squares**
-and the penalty parameter is selected with **robust generalized
-cross-validation**.
+and the penalty parameter is selected with **robust Generalized Cross
+Validation**.
 
 Here are detailed installation instructions:
 
