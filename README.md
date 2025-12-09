@@ -27,40 +27,6 @@ getwd()
 
 ``` r
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
-```
-
-    ## Loading required package: fda
-
-    ## Loading required package: splines
-
-    ## Loading required package: fds
-
-    ## Loading required package: rainbow
-
-    ## Loading required package: MASS
-
-    ## Loading required package: pcaPP
-
-    ## Loading required package: RCurl
-
-    ## Loading required package: deSolve
-
-    ## 
-    ## Attaching package: 'fda'
-
-    ## The following object is masked from 'package:graphics':
-    ## 
-    ##     matplot
-
-    ## The following object is masked from 'package:datasets':
-    ## 
-    ##     gait
-
-    ## Loading required package: Rcpp
-
-    ## Loading required package: RcppArmadillo
-
-``` r
 source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp.R")    # Least-Squares Penalized Spline Estimator
 source("huber_pensp.R") # Huber Penalized Spline estimator
@@ -71,12 +37,6 @@ source("huber_pensp.R") # Huber Penalized Spline estimator
 
 ``` r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
-```
-
-    ## Warning: packages 'fda', 'Rcpp', 'RcppArmadillo' are in use and will not be
-    ## installed
-
-``` r
 library(fda);library(Rcpp);library(RcppArmadillo)
 ```
 
