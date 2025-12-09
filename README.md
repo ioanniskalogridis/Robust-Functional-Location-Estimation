@@ -1,7 +1,9 @@
 This repository contains fast ```C++``` implementations with an ```R``` interface of the penalized spline estimators of Kalogridis (2025+) as well as a remake of the older smoothing spline estimator of
 Kalogridis and Van Aelst (2023, SJS). 
 
-Here are detailed instructions:
+The computation is done with Iteratively Reweighted Least-Squares and the penalty parameter is selected with generalized cross-validation.
+
+Here are detailed installation instructions:
 1. First, download all the files in your ```R``` working directory. This is at:
 ```r
 getwd()
@@ -12,6 +14,7 @@ getwd()
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
 source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp.R")    # Least-Squares Penalized Spline Estimator
+source("huber_pensp.R") # Huber Penalized Spline estimator
 ```
 
 3. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
@@ -29,9 +32,8 @@ All examples below use simulated discretely sampled functional data. No external
 
 ```r
 set.seed(2)
-n    <- 100 # 50 for more sparsely observed data
-p    <- 50 # 30
-
+n    <- 100 # 50 for smaller samples
+p    <- 50 # 30  for more sparsely observed data
 t_grid <- seq(0, 1, length.out = p)
 
 ## Population mean
