@@ -1,7 +1,7 @@
 This repository contains fast ```C++``` implementations with an ```R``` interface of the penalized spline estimators of Kalogridis (2025+) as well as a remake of the older smoothing spline estimator of
 Kalogridis and Van Aelst (2023, SJS). 
 
-The computation is done with Iteratively Reweighted Least-Squares and the penalty parameter is selected with generalized cross-validation.
+The computation is done with **Iteratively Reweighted Least-Squares** and the penalty parameter is selected with **robust generalized cross-validation**.
 
 Here are detailed installation instructions:
 1. First, download all the files in your ```R``` working directory. This is at:
@@ -26,6 +26,9 @@ library(fda);library(Rcpp);library(RcppArmadillo)
 ```
 
 4. These ```R``` functions will source the ```combined.cpp``` file containing the ```C++``` implementations; no ```C++``` knowledge is required.
+
+
+## Example: Simulated Data
 
 All examples below use simulated discretely sampled functional data. No external datasets are required.
 
