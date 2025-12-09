@@ -10,8 +10,10 @@ The computation is done with **Iteratively Reweighted Least-Squares**
 and the penalty parameter is selected with **robust generalized
 cross-validation**.
 
-Here are detailed installation instructions: 1. First, download all the
-files in your `R` working directory. This is at:
+Here are detailed installation instructions:
+
+1.  First, download all the files in your `R` working directory. This is
+    at:
 
 ``` r
 getwd()
@@ -120,9 +122,10 @@ lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
 lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> If the
-measurement errors follow a light-tailed distribution, the estimators
-perform comparably.
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+If the measurement errors follow a light-tailed distribution, the
+estimators perform comparably.
 
 But for heavier tailed measurement errors the situation changes
 dramatically:
