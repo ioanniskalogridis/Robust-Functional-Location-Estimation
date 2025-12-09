@@ -1,39 +1,92 @@
-This repository contains fast ```C++``` implementations with an ```R``` interface of the penalized spline estimators of Kalogridis (2025+) as well as a remake of the older smoothing spline estimator of
-Kalogridis and Van Aelst (2023, SJS). 
+Penalized Spline M-Estimators for Discretely Sampled Functional Data
+================
 
-The computation is done with **Iteratively Reweighted Least-Squares** and the penalty parameter is selected with **robust generalized cross-validation**.
+This repository contains fast `C++` implementations with an `R`
+interface of the penalized spline estimators of Kalogridis (2025+) as
+well as a remake of the older smoothing spline estimator of Kalogridis
+and Van Aelst (2023, SJS).
 
-Here are detailed installation instructions:
-1. First, download all the files in your ```R``` working directory. This is at:
-```r
+The computation is done with **Iteratively Reweighted Least-Squares**
+and the penalty parameter is selected with **robust generalized
+cross-validation**.
+
+Here are detailed installation instructions: 1. First, download all the
+files in your `R` working directory. This is at:
+
+``` r
 getwd()
 ```
-2. Load the ```R```-functions ```quan_smsp.R``` (Quantile Smoothing Spline Estimator), ```quan_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp.R``` (Least-Squares Penalized Spline Estimator).
 
-```r
+    ## [1] "C:/Users/ik77w/OneDrive - University of Glasgow/Documents/GitHub/Robust-Functional-Location-Estimation"
+
+2.  Load the `R`-functions `quan_smsp.R` (Quantile Smoothing Spline
+    Estimator), `quan_pensp.R` (Quantile Penalized Spline Estimator) and
+    `ls_pensp.R` (Least-Squares Penalized Spline Estimator).
+
+``` r
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
+```
+
+    ## Loading required package: fda
+
+    ## Loading required package: splines
+
+    ## Loading required package: fds
+
+    ## Loading required package: rainbow
+
+    ## Loading required package: MASS
+
+    ## Loading required package: pcaPP
+
+    ## Loading required package: RCurl
+
+    ## Loading required package: deSolve
+
+    ## 
+    ## Attaching package: 'fda'
+
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     matplot
+
+    ## The following object is masked from 'package:datasets':
+    ## 
+    ##     gait
+
+    ## Loading required package: Rcpp
+
+    ## Loading required package: RcppArmadillo
+
+``` r
 source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp.R")    # Least-Squares Penalized Spline Estimator
 source("huber_pensp.R") # Huber Penalized Spline estimator
 ```
 
-3. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
+3.  Be sure to have installed and loaded the `R`-packages `fda`, `Rcpp`
+    and `RcppArmadillo`:
 
-```r
+``` r
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
+```
 
+    ## Warning: packages 'fda', 'Rcpp', 'RcppArmadillo' are in use and will not be
+    ## installed
+
+``` r
 library(fda);library(Rcpp);library(RcppArmadillo)
 ```
 
-4. These ```R``` functions will source the ```combined.cpp``` file containing the ```C++``` implementations; no ```C++``` knowledge is required.
-
+4.  These `R` functions will source the `combined.cpp` file containing
+    the `C++` implementations; no `C++` knowledge is required.
 
 ## Example: Simulated Data
 
-All examples below use simulated discretely sampled functional data. No external datasets are required.
+All examples below use simulated discretely sampled functional data. No
+external datasets are required.
 
-
-```r
+``` r
 set.seed(2)
 n    <- 100 # 50 for smaller samples
 p    <- 50 # 30  for more sparsely observed data
@@ -44,8 +97,8 @@ mu_true <- function(t) sin(2 * pi * t) # Easy
 # mu_true <- function(t) exp(-(t-0.25)^2/0.01)+exp(-(t-0.50)^2/0.01) + exp(-(t-0.75)^2/0.01) # Much harder
 
 mu_grid <- mu_true(t_grid)
-X <- matrix(NA, nrow = n, ncol = p) 
-Y <- matrix(NA, nrow = n, ncol = p) #
+X <- matrix(NA, nrow = n, ncol = p) # discretely sample functional data
+Y <- matrix(NA, nrow = n, ncol = p) # with measurement error 
 for(i in 1:n){
 X[i,] <- mu_grid 
 for(j in 1:50){ 
@@ -66,15 +119,18 @@ ylim = c(-1.2, 1.2)) ; grid()
 lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
 lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
-If the measurement errors follow a light-tailed distribution, the estimators perform comparably. 
 
-<img width="1200" height="800" alt="Image" src="https://github.com/user-attachments/assets/c3955e99-7546-4033-80bb-352914ecdc7b" />
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> If the
+measurement errors follow a light-tailed distribution, the estimators
+perform comparably.
 
-But for heavier tailed measurement errors the situation changes dramatically:
+But for heavier tailed measurement errors the situation changes
+dramatically:
 
-```r
+``` r
 set.seed(2)
-X <- matrix(NA, nrow = n, ncol = p)
+X <- matrix(NA, nrow = n, ncol = p) 
+Y <- matrix(NA, nrow = n, ncol = p) 
 for(i in 1:n){
 X[i,] <- mu_grid 
 for(j in 1:50){ 
@@ -87,7 +143,7 @@ Y[i, idx] <- X[i, idx] + zeta
 }
 
 fit.lspensp <- ls_pensp(Y)
-fit.pensp <- quan_pensp(Y) # penalized-spline quantile estimator
+fit.pensp <- quan_pensp(Y) 
 
 par(mar = c(4,3.5,2,2), mgp = c(3, 1.5, 0))
 plot(t_grid, mu_grid, lwd = 3, lty = 1, type = "l", cex.axis = 2.5, cex.lab = 2.5, ylab = "", xlab = "t",
@@ -95,13 +151,23 @@ ylim = c(-1.2, 1.2)) ; grid()
 lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
 lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
-<img width="1200" height="800" alt="Image" src="https://github.com/user-attachments/assets/812a573f-45a4-4b32-a1df-017f7b5f2f5b" />
 
-Please see the ```R```-functions for complete documentation of the settings/options.
-The simulation script reproduces the results from Sction 5 in Kalogridis (2025+).
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-Get in contact with me at ioannis.kalogridis@glasgow.ac.uk for any issues/questions or suggestions.
+## Notes
+
+- Please see the `R`-functions for complete documentation of the
+  settings/options.
+- The simulation script reproduces the results from Section 5 in
+  Kalogridis (2025+).
+
+Get in contact with me at <ioannis.kalogridis@glasgow.ac.uk> for any
+issues, questions or suggestions.
 
 ## References
-1. Kalogridis, I. (2025+) Penalized Spline M-Estimators for Discretely Sampled Functional Data: Existence and Asymptotics, under review.
-2. Kalogridis, I. and Van Aelst, S. (2023) Robust Optimal Estimation of Location from Discretely Sampled Functional Data, Scand. J. Statist. (50), 411--451.
+
+1.  Kalogridis, I. (2025+) Penalized Spline M-Estimators for Discretely
+    Sampled Functional Data: Existence and Asymptotics, under review.
+2.  Kalogridis, I. and Van Aelst, S. (2023) Robust Optimal Estimation of
+    Location from Discretely Sampled Functional Data, Scand. J. Statist.
+    (50), 411–451.
