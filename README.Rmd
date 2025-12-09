@@ -18,7 +18,7 @@ getwd()
 ```
 2. Load the ```R```-functions ```quan_smsp.R``` (Quantile Smoothing Spline Estimator), ```quan_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp.R``` (Least-Squares Penalized Spline Estimator).
 
-```{r}
+```{r message = FALSE}
 source("quan_smsp.R")    # Quantile Smoothing Spline Estimator
 source("quan_pensp.R")   # Quantile Penalized Spline Estimator
 source("ls_pensp.R")    # Least-Squares Penalized Spline Estimator
