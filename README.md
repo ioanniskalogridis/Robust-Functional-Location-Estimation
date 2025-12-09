@@ -29,8 +29,8 @@ All examples below use simulated discretely sampled functional data. No external
 
 ```r
 set.seed(2)
-n    <- 100
-p    <- 50
+n    <- 100 # 50 for more sparsely observed data
+p    <- 50 # 30
 
 t_grid <- seq(0, 1, length.out = p)
 
