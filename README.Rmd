@@ -27,7 +27,7 @@ source("huber_pensp.R") # Huber Penalized Spline estimator
 
 3. Be sure to have installed and loaded the ```R```-packages ```fda```, ```Rcpp``` and ```RcppArmadillo```:
 
-```{r}
+```{r, eval = FALSE}
 install.packages(c("fda", "Rcpp", "RcppArmadillo"))
 library(fda);library(Rcpp);library(RcppArmadillo)
 ```
@@ -39,7 +39,7 @@ library(fda);library(Rcpp);library(RcppArmadillo)
 All examples below use simulated discretely sampled functional data. No external datasets are required.
 
 
-```{r message=FALSE}
+```{r message=FALSE, warning = FALSE, cache=TRUE}
 set.seed(2)
 n    <- 100 # 50 for smaller samples
 p    <- 50 # 30  for more sparsely observed data
@@ -77,7 +77,7 @@ If the measurement errors follow a light-tailed distribution, the estimators per
 
 But for heavier tailed measurement errors the situation changes dramatically:
 
-```{r message = FALSE}
+```{r message=FALSE, warning = FALSE, cache=TRUE}
 set.seed(2)
 X <- matrix(NA, nrow = n, ncol = p) 
 Y <- matrix(NA, nrow = n, ncol = p) 
