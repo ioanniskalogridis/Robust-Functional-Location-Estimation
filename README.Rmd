@@ -13,7 +13,7 @@ Here are detailed installation instructions:
 
 1. First, download all the files in your ```R``` working directory. This is at:
 
-```{r message = FALSE, echo = FALSE}
+```{r echo=TRUE, message=FALSE, results = "hide"}
 getwd()
 ```
 2. Load the ```R```-functions ```quan_smsp.R``` (Quantile Smoothing Spline Estimator), ```quan_pensp.R``` (Quantile Penalized Spline Estimator) and ```ls_pensp.R``` (Least-Squares Penalized Spline Estimator).

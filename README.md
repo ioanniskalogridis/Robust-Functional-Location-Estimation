@@ -19,8 +19,6 @@ Here are detailed installation instructions:
 getwd()
 ```
 
-    ## [1] "C:/Users/ik77w/OneDrive - University of Glasgow/Documents/GitHub/Robust-Functional-Location-Estimation"
-
 2.  Load the `R`-functions `quan_smsp.R` (Quantile Smoothing Spline
     Estimator), `quan_pensp.R` (Quantile Penalized Spline Estimator) and
     `ls_pensp.R` (Least-Squares Penalized Spline Estimator).
