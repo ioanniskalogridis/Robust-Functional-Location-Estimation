@@ -12,9 +12,9 @@ require(Rcpp)          # Interface to C++
 require(RcppArmadillo) # Efficient matrix operations in C++
 Rcpp::sourceCpp("combined.cpp")  # Load the C++ functions
 
-quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
+quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = NULL,
                        lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50)),
-                       max_it = 100, tol = 1e-6, tun = 1e-3) {
+                       max_it = 200, tol = 1e-6, tun = 1e-3) {
   
   # - Preprocessing -
   # Convert input to matrix and remove rows with all NA
@@ -22,7 +22,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   Y <- Y[rowSums(!is.na(Y)) > 0, , drop = FALSE]
   
   n <- nrow(Y)  # number of subjects
-  p <- ncol(Y)  # number of measurement points per subject
+  p <- ncol(Y)  # maximum number of measurement points 
   
   # Uniform grid of measurement points from 0 to 1
   t_grid <- seq(0, 1, length.out = p)
@@ -32,11 +32,13 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   obs_idx <- which(!is.na(Y))      # indices of observed entries
   t_obs <- T_mat[obs_idx]          # time points of observed entries
   y_obs <- Y[obs_idx]              # observed values
+
   
   # --- Weights ---
   # Number of measurements per subject
   m_i <- rowSums(!is.na(Y))
-  
+  K <- ifelse(is.null(K), min(35, max(m_i)), K)
+          
   # Map linear indices back to row IDs
   row_id <- ((obs_idx - 1) %% n) + 1
   
@@ -65,6 +67,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = 30,
   return(list(
     mu = mu_est,       # estimated quantile function
     lambda = fit$lambda,  # selected smoothing parameter
-    weights = fit$weights # observation weights used in IRLS
+    weights = fit$weights, # observation weights used in IRLS
+    iter = fit$iterations
   ))
 }

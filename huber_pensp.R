@@ -12,9 +12,9 @@ require(Rcpp)          # Interface to C++
 require(RcppArmadillo) # Efficient matrix operations in C++
 Rcpp::sourceCpp("combined.cpp")  # Load the C++ functions
 
-huber_pensp <- function(Y, r = 2, m = 4, K = 30,
+huber_pensp <- function(Y, r = 2, m = 4, K = NULL,
                        lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50)),
-                       max_it = 100, tol = 1e-6, tun = 1.345) {
+                       max_it = 200, tol = 1e-6, tun = 1.345) {
   
   # - Preprocessing -
   # Convert input to matrix and remove rows with all NA
@@ -36,6 +36,7 @@ huber_pensp <- function(Y, r = 2, m = 4, K = 30,
   # --- Weights ---
   # Number of measurements per subject
   m_i <- rowSums(!is.na(Y))
+  K <- ifelse(is.null(K), min(35, max(m_i)), K)
   
   # Map linear indices back to row IDs
   row_id <- ((obs_idx - 1) %% n) + 1

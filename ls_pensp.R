@@ -12,7 +12,7 @@ require(Rcpp)          # Interface to C++
 require(RcppArmadillo) # Efficient matrix operations in C++
 Rcpp::sourceCpp("combined.cpp")  # Load the C++ functions
 
-ls_pensp <- function(Y, r = 2, m = 4, K = 30,
+ls_pensp <- function(Y, r = 2, m = 4, K = NULL,
                      lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50))) { 
   
   # --- Preprocessing ---
@@ -31,10 +31,11 @@ ls_pensp <- function(Y, r = 2, m = 4, K = 30,
   obs_idx <- which(!is.na(Y))      # indices of observed entries
   t_obs <- T_mat[obs_idx]          # time points of observed entries
   y_obs <- as.numeric(Y[obs_idx])  # observed values
-  
+
   # --- Weights
   # Compute number of measurements per subject
   m_i <- rowSums(!is.na(Y))
+  K <- ifelse(is.null(K), min(35, max(m_i)), K)
   
   # Map linear indices back to row IDs
   row_id <- ((obs_idx - 1) %% n) + 1
