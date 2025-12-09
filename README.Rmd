@@ -10,6 +10,7 @@ Kalogridis and Van Aelst (2023, SJS).
 The computation is done with **Iteratively Reweighted Least-Squares** and the penalty parameter is selected with **robust generalized cross-validation**.
 
 Here are detailed installation instructions:
+
 1. First, download all the files in your ```R``` working directory. This is at:
 
 ```{r}
@@ -38,7 +39,7 @@ library(fda);library(Rcpp);library(RcppArmadillo)
 All examples below use simulated discretely sampled functional data. No external datasets are required.
 
 
-```{r}
+```{r message=FALSE}
 set.seed(2)
 n    <- 100 # 50 for smaller samples
 p    <- 50 # 30  for more sparsely observed data
@@ -71,11 +72,12 @@ ylim = c(-1.2, 1.2)) ; grid()
 lines(t_grid,fit.pensp$mu, lwd = 3, type= "l", col = "blue")
 lines(t_grid, fit.lspensp$mu, lwd = 3, type = "l", col = "red")
 ```
+
 If the measurement errors follow a light-tailed distribution, the estimators perform comparably. 
 
 But for heavier tailed measurement errors the situation changes dramatically:
 
-```{r}
+```{r message = FALSE}
 set.seed(2)
 X <- matrix(NA, nrow = n, ncol = p) 
 Y <- matrix(NA, nrow = n, ncol = p) 
