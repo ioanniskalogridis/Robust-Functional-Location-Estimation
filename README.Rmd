@@ -72,10 +72,11 @@ library(viridis)
 df <- data.frame(
   t = rep(t_grid, 3),
   value = c(mu_grid, fit.pensp$mu, fit.lspensp$mu),
-  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid))))
+  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid)),
+  levels = c("True","LAD Pen. Spline","LS Pen. Spline")))
 
-colors <- c("True" = "black", "LAD Pen. Spline" = viridis(2)[1], "LS Pen. Spline" = viridis(2)[2])
-line_types <- c("True" = "solid", "LAD Pen. Spline" = "dashed", "LS Pen. Spline" = "dotted")
+colors <- c("True" = "black", "LAD Pen. Spline" = "red", "LS Pen. Spline" = "blue")
+line_types <- c("True" = "solid", "LAD Pen. Spline" = "longdash", "LS Pen. Spline" = "twodash")
 
 ggplot(df, aes(x=t, y=value, color=method, linetype=method)) +
   geom_line(size=1.2) +
@@ -116,7 +117,8 @@ fit.pensp <- quan_pensp(Y)
 df <- data.frame(
   t = rep(t_grid, 3),
   value = c(mu_grid, fit.pensp$mu, fit.lspensp$mu),
-  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid))))
+  method = factor(rep(c("True","LAD Pen. Spline","LS Pen. Spline"), each=length(t_grid)),
+  levels = c("True","LAD Pen. Spline","LS Pen. Spline")))
 
 ggplot(df, aes(x=t, y=value, color=method, linetype=method)) +
   geom_line(size=1.2) +
