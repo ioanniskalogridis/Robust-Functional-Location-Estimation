@@ -4,7 +4,7 @@
 # This function estimates the mean function of discretely sampled
 # functional data using B-splines and an O-spline roughness penalty.
 # Computation is performed via a fast C++ routine.
-# Please find detailed documentation below.
+# For details, see the documentation below.
 # ----------------------------------------------------------------------
 
 require(fda)           # For B-spline basis and penalty functions
@@ -14,6 +14,14 @@ Rcpp::sourceCpp("combined.cpp")  # Load the C++ functions
 
 ls_pensp <- function(Y, r = 2, m = 4, K = NULL,
                      lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50))) { 
+  
+  # Y: Numeric matrix (subjects x time points). NA for missing values.
+  # r: Order of the penalty (default = 2, 2nd derivative penalization)
+  # m: Order of B-spline basis (default = 4, cubic splines)
+  # K: Number of interior knots (default = min(35, max observed per subject))
+  # lambda_grid: Candidate penalty parameters for GCV selection
+  # max_it: Maximum IRLS iterations (default = 200)
+  # tol: Numeric tolerance for IRLS convergence (default = 1e-6)
   
   # --- Preprocessing ---
   # Convert input to matrix if needed and remove empty rows
@@ -43,7 +51,6 @@ ls_pensp <- function(Y, r = 2, m = 4, K = NULL,
   # Assign weight 1/(n * m_i) to each observation
   weights_per_obs <- 1 / (n * m_i[row_id])
   
-  # --- Basis Construction 
   # Use B-spline basis with K basis functions from equidistant knots and order m
   b_basis <- create.bspline.basis(rangeval = c(0, 1), nbasis = K, norder = m)
   

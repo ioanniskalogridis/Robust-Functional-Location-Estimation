@@ -72,6 +72,6 @@ huber_pensp <- function(Y, r = 2, m = 4, K = NULL,
   return(list(
     mu = mu_est,       # estimated Huber functional
     lambda = fit$lambda,  # selected smoothing parameter
-    weights = fit$weights # observation weights used in IRLS
+    weights = fit$weights # converged IRLS weights
   ))
 }

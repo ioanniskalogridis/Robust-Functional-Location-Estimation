@@ -4,7 +4,7 @@
 # This function estimates the conditional quantile function of 
 # discretely sampled functional data using B-splines and an O-spline roughness 
 # penalty. Computation is performed via a fast C++ routine.
-# For details, please see the documentation below.
+# For details, see the documentation below.
 # ----------------------------------------------------------------------
 
 require(fda)           # For B-spline basis and penalty functions
@@ -15,6 +15,16 @@ Rcpp::sourceCpp("combined.cpp")  # Load the C++ functions
 quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = NULL,
                        lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50)),
                        max_it = 200, tol = 1e-6, tun = 1e-3) {
+  
+  # Y: Numeric matrix (subjects x time points). NA for missing values.
+  # alpha: quantile to be estimated (default = 0.5, median)
+  # r: Order of the penalty (default = 2, 2nd derivative penalization)
+  # m: Order of B-spline basis (default = 4, cubic splines)
+  # K: Number of interior knots (default = min(35, max observed per subject))
+  # lambda_grid: Candidate penalty parameters for GCV selection
+  # max_it: Maximum IRLS iterations (default = 200)
+  # tol: Numeric tolerance for IRLS convergence (default = 1e-6)
+  # tun: tuning of the local quadratic approximation to the check loss (default = 10^{-3})
   
   # - Preprocessing -
   # Convert input to matrix and remove rows with all NA
@@ -33,8 +43,6 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = NULL,
   t_obs <- T_mat[obs_idx]          # time points of observed entries
   y_obs <- Y[obs_idx]              # observed values
 
-  
-  # --- Weights ---
   # Number of measurements per subject
   m_i <- rowSums(!is.na(Y))
   K <- ifelse(is.null(K), min(35, max(m_i)), K)
@@ -45,7 +53,6 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = NULL,
   # Assign weight 1/(n * m_i) to each observation
   weights_per_obs <- 1 / (n * m_i[row_id])
   
-  # --- Basis Construction ---
   # Create B-spline basis with K basis functions and order m
   b_basis <- create.bspline.basis(rangeval = c(0, 1), nbasis = K, norder = m)
   
@@ -67,7 +74,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = NULL,
   return(list(
     mu = mu_est,       # estimated quantile function
     lambda = fit$lambda,  # selected smoothing parameter
-    weights = fit$weights, # observation weights used in IRLS
-    iter = fit$iterations
+    weights = fit$weights, # converged IRLS weights
+    iter = fit$iterations # number of iterations for the best lambda
   ))
 }

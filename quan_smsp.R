@@ -2,7 +2,7 @@
 # quan_smsp: Quantile Smoothing Spline Estimator
 # ----------------------------------------------------------------------
 # This function estimates the alpha-th quantile function of discretely
-# sampled functional data using B-splines and a roughness penalty.
+# sampled functional data with smoothing splines.
 # Computation is performed via fast C++ routines (IRLS + GCV).
 # ----------------------------------------------------------------------
 
@@ -15,7 +15,14 @@ quan_smsp <- function(Y, alpha = 0.5, r = 2,
                       lambda_grid = exp(seq(log(1e-8), log(1e-1), length.out = 50)),
                       max_it = 200, tol = 1e-6, tun = 1e-3) {
   
-  # --- Preprocessing ---
+  # Y: Numeric matrix (subjects x time points). NA for missing values.
+  # alpha: quantile to be estimated (default = 0.5, median)
+  # r: Order of the penalty (default = 2, 2nd derivative penalization)
+  # lambda_grid: Candidate penalty parameters for GCV selection
+  # max_it: Maximum IRLS iterations (default = 200)
+  # tol: Numeric tolerance for IRLS convergence (default = 1e-6)
+  # tun: tuning of the local quadratic approximation to the check loss (default = 10^{-3})
+  
   # Convert input to matrix if needed and remove empty rows
   Y <- as.matrix(Y)
   Y <- Y[rowSums(!is.na(Y)) > 0, , drop = FALSE]
