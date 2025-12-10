@@ -34,7 +34,7 @@ source("huber_pensp.R") # Huber Penalized Spline estimator
     and `RcppArmadillo`:
 
 ``` r
-install.packages(c("fda", "Rcpp", "RcppArmadillo"))
+# install.packages(c("fda", "Rcpp", "RcppArmadillo"))
 library(fda);library(Rcpp);library(RcppArmadillo)
 ```
 
