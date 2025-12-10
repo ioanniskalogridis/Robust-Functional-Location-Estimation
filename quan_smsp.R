@@ -63,11 +63,9 @@ quan_smsp <- function(Y, alpha = 0.5, r = 2,
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
   # --- IRLS + GCV ---
-  # Main C++ routine: iteratively reweighted least squares with GCV
+  # Main C++ routine: IRLS with GCV
   fit <- irls_gcv_cpp_pensp(B, Pen, y_obs, weights_per_obs, alpha,
                             lambda_grid, max_it, tol, tun)
-  
-  # Compute estimated quantile function on full grid
   mu_est <- eval.basis(t_grid, b_basis) %*% fit$beta_hat
   
   # --- Return Results ---

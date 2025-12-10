@@ -64,7 +64,7 @@ quan_pensp <- function(Y, alpha = 0.5, r = 2, m = 4, K = NULL,
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
   # IRLS + GCV
-  # Fit the penalized quantile regression using the C++ routine
+  # Fit penalized quantiles using the C++ routine
   fit <- irls_gcv_cpp_pensp(B, Pen, y_obs, weights_per_obs, alpha,
                             lambda_grid, max_it, tol, tun)
   

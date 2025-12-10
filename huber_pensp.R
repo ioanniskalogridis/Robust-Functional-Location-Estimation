@@ -63,8 +63,7 @@ huber_pensp <- function(Y, r = 2, m = 4, K = NULL,
   # Roughness penalty on r-th derivative
   Pen <- bsplinepen(b_basis, Lfdobj = r)
   
-  # IRLS + GCV
-  # Fit the penalized Huber regression using the C++ routine
+  # Fit penalized Huber using the C++ routine
   fit <- irls_gcv_cpp_huber(B, Pen, y_obs, weights_per_obs,
                             lambda_grid, max_it, tol = tol, tuning = tun)
   mu_est <- eval.basis(t_grid, b_basis) %*% fit$beta_hat
